@@ -1,0 +1,40 @@
+title: Post
+icon: text
+num: date
+
+columns:
+  main:
+    width: 2/3
+    sections:
+      fields:
+        type: fields
+        fields:
+          text:
+            type: tiptap
+            uploads: image
+            size: huge
+  sidebar:
+    width: 1/3
+    sections:
+      meta:
+        type: fields
+        fields:
+          category:
+            type: select
+            required: true
+            options:
+              media: Media
+              events: Events
+            help: Media covers interviews and features.
+          date:
+            type: date
+            required: true
+            default: today
+          cover:
+            type: files
+            multiple: false
+            uploads: image
+            query: page.images
+      files:
+        type: files
+        template: image

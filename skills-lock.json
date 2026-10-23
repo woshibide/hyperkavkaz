@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "skills": {
+    "kirby-collections-and-navigation": {
+      "source": "bnomei/kirby-mcp",
+      "ref": "v1.15.1",
+      "sourceType": "github",
+      "skillPath": "skills/kirby-collections-and-navigation/SKILL.md",
+      "computedHash": "8bb9a78765c88dbac84967c6a1eef4d916eb7eb5b5eb84a56b7d84c39ccc5301"
+    },
+    "kirby-forms-and-frontend-actions": {
+      "source": "bnomei/kirby-mcp",
+      "ref": "v1.15.1",
+      "sourceType": "github",
+      "skillPath": "skills/kirby-forms-and-frontend-actions/SKILL.md",
+      "computedHash": "da4eacbce6410bdb7c9d6d453fec3fdac6e20d9f02558a5c9b71ce9425af698b"
+    },
+    "kirby-panel-and-blueprints": {
+      "source": "bnomei/kirby-mcp",
+      "ref": "v1.15.1",
+      "sourceType": "github",
+      "skillPath": "skills/kirby-panel-and-blueprints/SKILL.md",
+      "computedHash": "384b3b1e250b2b7105a2309b09366234cf7313c9108bceb92dfe8a6686b0b47e"
+    },
+    "kirby-scaffold-page-type": {
+      "source": "bnomei/kirby-mcp",
+      "ref": "v1.15.1",
+      "sourceType": "github",
+      "skillPath": "skills/kirby-scaffold-page-type/SKILL.md",
+      "computedHash": "8311f9f623a5d37b4efb092d94f5f3a9c9cb5a61e9c0b68a4018046ce9908224"
+    }
+  }
+}

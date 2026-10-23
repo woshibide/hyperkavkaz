@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "kirby": {
+      "type": "stdio",
+      "command": "/Users/pyotr/wip/hyperkavkaz/2_dev/vendor/bin/kirby-mcp",
+      "args": [
+        "--project=/Users/pyotr/wip/hyperkavkaz/2_dev"
+      ],
+      "env": {}
+    }
+  }
+}

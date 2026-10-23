@@ -1,0 +1,9 @@
+title: Artists
+icon: users
+
+sections:
+  artists:
+    type: pages
+    label: Artists
+    template: artist
+    sortBy: title asc

@@ -1,0 +1,16 @@
+title: Links
+icon: url
+
+fields:
+  links:
+    label: Links
+    type: structure
+    help: Socials, streaming profiles and other project links, in the order shown here.
+    fields:
+      label:
+        type: text
+        required: true
+      link:
+        label: URL
+        type: url
+        required: true

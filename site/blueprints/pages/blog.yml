@@ -1,0 +1,10 @@
+title: Blog
+icon: book
+
+sections:
+  posts:
+    type: pages
+    label: Posts
+    template: post
+    sortBy: date desc
+    info: "{{ page.categoryLabel }}"

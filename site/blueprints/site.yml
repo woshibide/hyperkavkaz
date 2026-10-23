@@ -1,0 +1,22 @@
+title: Site
+
+tabs:
+  pages:
+    label: Pages
+    icon: page
+    sections:
+      pages:
+        type: pages
+
+  settings:
+    label: Settings
+    icon: settings
+    fields:
+      loop:
+        label: Feedback tool (Loop)
+        type: toggle
+        text:
+          - "Off"
+          - "On"
+        default: false
+        help: Lets logged-in Panel users leave comments directly on the website. Turn it off when the review is done.

@@ -1,0 +1,10 @@
+title: Image
+
+accept:
+  type: image
+
+fields:
+  alt:
+    label: Alternative text
+    type: text
+    help: Describe the image for people who cannot see it. Leave empty if it is decorative.

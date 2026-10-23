@@ -1,0 +1,9 @@
+title: Newsletter
+icon: email
+
+fields:
+  text:
+    label: Introduction
+    type: tiptap
+    uploads: image
+    size: small

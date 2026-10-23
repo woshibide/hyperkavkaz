@@ -1,0 +1,30 @@
+title: Artist
+icon: user
+num: zero
+
+columns:
+  main:
+    width: 2/3
+    sections:
+      fields:
+        type: fields
+        fields:
+          text:
+            label: Biography
+            type: tiptap
+            uploads: image
+            size: large
+  sidebar:
+    width: 1/3
+    sections:
+      meta:
+        type: fields
+        fields:
+          cover:
+            type: files
+            multiple: false
+            uploads: image
+            query: page.images
+      files:
+        type: files
+        template: image

@@ -1,0 +1,8 @@
+title: Shop
+icon: cart
+
+sections:
+  products:
+    type: pages
+    label: Products
+    template: product

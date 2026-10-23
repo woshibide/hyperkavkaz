@@ -1,0 +1,107 @@
+/* Base reset and design tokens. No layout or colour decisions yet. */
+
+/*
+ * Fonts come from the Adobe Fonts kit linked in site/snippets/layout.php.
+ * Each family has regular (400) and bold (700), no italics.
+ * Browsers only download the faces a page actually uses.
+ */
+:root {
+  --font-sloop-one: "sloop-script-one", sans-serif;
+  --font-sloop-two: "sloop-script-two", sans-serif;
+  --font-sloop-three: "sloop-script-three", sans-serif;
+  --font-sloop-pro: "sloop-script-pro", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+a,
+button,
+input,
+label,
+select,
+summary,
+textarea {
+  touch-action: manipulation;
+}
+
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Hidden visually, still read by screen readers. The skip link shows on keyboard focus. */
+.visually-hidden,
+.skip-link:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Home: the 3D wordmark fills the viewport behind the page (assets/js/wordmark.js). */
+.wordmark {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
