@@ -2,4 +2,8 @@ Title: Newsletter
 
 ----
 
+Text: {"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"One email a month at most: new releases and pre-orders first, then events in Japan and the Caucasus."}]},{"type":"paragraph","content":[{"type":"text","text":"Your address is used for this newsletter only. Every email has an unsubscribe link. This text is test content."}]}]}
+
+----
+
 Uuid: zjeudykodwlvmzxu

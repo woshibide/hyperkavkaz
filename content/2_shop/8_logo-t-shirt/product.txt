@@ -1,0 +1,45 @@
+Title: Logo T-shirt
+
+----
+
+Text: {"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Logo T-shirt is test content for the page design. A short description of the record goes here: how it was made, what it sounds like, and what comes in the sleeve."}]}]}
+
+----
+
+Tracklist: 
+
+----
+
+Price: 30
+
+----
+
+Availability: available
+
+----
+
+Link: https://hyperkavkaz.bandcamp.com/album/logo-t-shirt
+
+----
+
+Artist: 
+
+----
+
+Format: T-shirt, organic cotton, sizes S to XL
+
+----
+
+Catalogue: 
+
+----
+
+Release: 
+
+----
+
+Cover: - file://moxiae93vps0anpr
+
+----
+
+Uuid: pxylyujxot5mjl91

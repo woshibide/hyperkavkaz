@@ -1,0 +1,9 @@
+Template: image
+
+----
+
+Alt: Test cover image, an abstract gradient.
+
+----
+
+Uuid: mlkmbovmj6azk2hj

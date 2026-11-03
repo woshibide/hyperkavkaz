@@ -2,4 +2,53 @@ Title: Press
 
 ----
 
+Text: {"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Press photos, logos and the one-sheet are free to use in coverage of the label and its artists. For interviews, review copies or anything else, write to us. This text is test content."}]}]}
+
+----
+
+Coverage:
+
+- 
+  outlet: Sound Field Quarterly
+  headline: >
+    A label from the mountains, heard from
+    Tokyo
+  link: https://example.com/sfq
+  date: 2026-10-12
+- 
+  outlet: Night Transit Radio
+  headline: Two hours with HYPERKAVKAZ
+  link: https://example.com/ntr
+  date: 2026-09-28
+- 
+  outlet: Low End Weekly
+  headline: 'Review: Black Sea Static, Port Lights'
+  link: https://example.com/lew
+  date: 2026-07-20
+- 
+  outlet: The Wire Shelf
+  headline: Ten records from the edges this summer
+  link: ""
+  date: 2026-07-02
+- 
+  outlet: Tape Club Journal
+  headline: >
+    Elbrus Choir and the sound of a hundred
+    voices
+  link: https://example.com/tcj
+  date: 2026-08-30
+- 
+  outlet: City Listings
+  headline: >
+    Label launch party, picked for the
+    weekend
+  link: https://example.com/cl
+  date: 2026-04-24
+
+----
+
+Email: press@example.com
+
+----
+
 Uuid: wgpi4qxbeok26goq

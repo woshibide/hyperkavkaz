@@ -1,0 +1,61 @@
+Title: Night Train to Kutaisi
+
+----
+
+Text: {"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Night Train to Kutaisi is test content for the page design. A short description of the record goes here: how it was made, what it sounds like, and what comes in the sleeve."}]}]}
+
+----
+
+Tracklist:
+
+- 
+  title: Platform 2
+  length: 3:21
+- 
+  title: Night train to Kutaisi
+  length: 4:05
+- 
+  title: Rain on the window
+  length: 3:47
+- 
+  title: Rioni
+  length: 4:30
+- 
+  title: Home again
+  length: 3:58
+
+----
+
+Price: 28
+
+----
+
+Availability: preorder
+
+----
+
+Link: https://hyperkavkaz.bandcamp.com/album/night-train-to-kutaisi
+
+----
+
+Artist: - page://aw8rcu5ruwamzo0p
+
+----
+
+Format: 12-inch vinyl
+
+----
+
+Catalogue: HK-006
+
+----
+
+Release: 2026-11-27
+
+----
+
+Cover: - file://zjpztmomjqfwwi4s
+
+----
+
+Uuid: wkr6pgmxvlzkym42

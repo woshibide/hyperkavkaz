@@ -1,0 +1,70 @@
+Title: Delta Signals
+
+----
+
+Text: {"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Delta Signals is test content for the page design. A short description of the record goes here: how it was made, what it sounds like, and what comes in the sleeve."}]}]}
+
+----
+
+Tracklist:
+
+- 
+  title: Estuary
+  length: 5:32
+- 
+  title: Silt
+  length: 6:01
+- 
+  title: Reed beds
+  length: 7:15
+- 
+  title: Delta signals
+  length: 8:48
+- 
+  title: Flood plain
+  length: 6:27
+- 
+  title: Caspian
+  length: 10:12
+- 
+  title: Slow current
+  length: 5:50
+- 
+  title: Mouth
+  length: 4:22
+
+----
+
+Price: 36
+
+----
+
+Availability: available
+
+----
+
+Link: https://hyperkavkaz.bandcamp.com/album/delta-signals
+
+----
+
+Artist: - page://97825up9ixbsmtbt
+
+----
+
+Format: Double 12-inch vinyl
+
+----
+
+Catalogue: HK-004
+
+----
+
+Release: 2026-09-30
+
+----
+
+Cover: - file://kxoen2m9obravmxb
+
+----
+
+Uuid: 0ursjvvabegpncm3

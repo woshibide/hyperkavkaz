@@ -5,39 +5,47 @@
  * @var string      $email
  * @var string|null $error
  * @var bool        $done
+ * @var bool        $heading Whether to show the "Newsletter" heading and the one-line introduction;
+ *                           off on the newsletter page, whose title and text say it.
  */
-$email ??= '';
-$error ??= null;
-$done  ??= false;
+$email   ??= '';
+$error   ??= null;
+$done    ??= false;
+$heading ??= true;
 
 if (!$newsletter = page('newsletter')) {
   return;
 }
 ?>
-<section id="newsletter" aria-labelledby="newsletter-title">
-  <h2 id="newsletter-title">Newsletter</h2>
+<section class="newsletter" id="newsletter" <?= $heading ? 'aria-labelledby="newsletter-title"' : 'aria-label="Newsletter sign-up"' ?>>
+  <?php if ($heading): ?>
+    <h2 id="newsletter-title">Newsletter</h2>
+    <p>New releases and events, by email. Unsubscribe any time.</p>
+  <?php endif ?>
   <?php if ($done): ?>
     <p role="status">Thanks. You're on the list.</p>
   <?php else: ?>
     <form method="post" action="<?= $newsletter->url() ?>#newsletter">
-      <label for="newsletter-email">Email</label>
-      <input
-        id="newsletter-email"
-        type="email"
-        name="email"
-        autocomplete="email"
-        spellcheck="false"
-        required
-        value="<?= esc($email, 'attr') ?>"
-        <?= $error ? 'aria-invalid="true"' : '' ?>
-        aria-describedby="newsletter-error"
-      >
+      <label for="newsletter-email">Email address</label>
+      <div class="newsletter-field">
+        <input
+          id="newsletter-email"
+          type="email"
+          name="email"
+          autocomplete="email"
+          spellcheck="false"
+          required
+          value="<?= esc($email, 'attr') ?>"
+          <?= $error ? 'aria-invalid="true"' : '' ?>
+          aria-describedby="newsletter-error"
+        >
+        <button type="submit">Subscribe</button>
+      </div>
       <div class="visually-hidden" aria-hidden="true">
         <label for="newsletter-website">Leave this field empty</label>
         <input id="newsletter-website" type="text" name="website" tabindex="-1" autocomplete="off">
       </div>
-      <button type="submit">Subscribe</button>
-      <p id="newsletter-error" aria-live="polite"><?= esc($error ?? '') ?></p>
+      <p class="newsletter-error" id="newsletter-error" aria-live="polite"><?= esc($error ?? '') ?></p>
     </form>
   <?php endif ?>
 </section>

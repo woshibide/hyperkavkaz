@@ -1,0 +1,64 @@
+Title: Riverbed Hours
+
+----
+
+Text: {"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Riverbed Hours is test content for the page design. A short description of the record goes here: how it was made, what it sounds like, and what comes in the sleeve."}]}]}
+
+----
+
+Tracklist:
+
+- 
+  title: Low water
+  length: 6:12
+- 
+  title: Stones, counted
+  length: 4:48
+- 
+  title: The bridge at Pasanauri
+  length: 7:30
+- 
+  title: Night fishing
+  length: 5:05
+- 
+  title: Upstream
+  length: 8:41
+- 
+  title: Riverbed hours
+  length: 9:02
+
+----
+
+Price: 28
+
+----
+
+Availability: available
+
+----
+
+Link: https://hyperkavkaz.bandcamp.com/album/riverbed-hours
+
+----
+
+Artist: - page://lexllxhxzopqx32b
+
+----
+
+Format: 12-inch vinyl
+
+----
+
+Catalogue: HK-001
+
+----
+
+Release: 2026-05-15
+
+----
+
+Cover: - file://wbdymdwuzppxwqol
+
+----
+
+Uuid: ua3om9o2ruhmmnxu

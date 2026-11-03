@@ -1,0 +1,55 @@
+Title: Snowline
+
+----
+
+Text: {"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Snowline is test content for the page design. A short description of the record goes here: how it was made, what it sounds like, and what comes in the sleeve."}]}]}
+
+----
+
+Tracklist:
+
+- 
+  title: First voice
+  length: 3:40
+- 
+  title: Snowline
+  length: 12:05
+- 
+  title: Pass
+  length: 9:18
+
+----
+
+Price: 12
+
+----
+
+Availability: available
+
+----
+
+Link: https://hyperkavkaz.bandcamp.com/album/snowline
+
+----
+
+Artist: - page://qwj6vnb4mqtsqr4t
+
+----
+
+Format: Cassette
+
+----
+
+Catalogue: HK-003
+
+----
+
+Release: 2026-08-21
+
+----
+
+Cover: - file://ktzjz3txrx7unhrt
+
+----
+
+Uuid: kzlh6hadutz1fcef

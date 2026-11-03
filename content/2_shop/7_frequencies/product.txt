@@ -1,0 +1,61 @@
+Title: Frequencies
+
+----
+
+Text: {"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Frequencies is test content for the page design. A short description of the record goes here: how it was made, what it sounds like, and what comes in the sleeve."}]}]}
+
+----
+
+Tracklist:
+
+- 
+  title: Tuning
+  length: 1:12
+- 
+  title: Shortwave
+  length: 6:40
+- 
+  title: Folk record, played fast
+  length: 5:21
+- 
+  title: Frequencies
+  length: 7:09
+- 
+  title: Static choir
+  length: 5:44
+
+----
+
+Price: 15
+
+----
+
+Availability: available
+
+----
+
+Link: https://hyperkavkaz.bandcamp.com/album/frequencies
+
+----
+
+Artist: - page://yrkad9vvdfnecwzy
+
+----
+
+Format: CD
+
+----
+
+Catalogue: HK-007
+
+----
+
+Release: 2026-10-02
+
+----
+
+Cover: - file://dxaxiq6xvtky6c5m
+
+----
+
+Uuid: giogblytswqaoemn

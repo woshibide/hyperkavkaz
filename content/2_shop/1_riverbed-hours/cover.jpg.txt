@@ -1,0 +1,9 @@
+Alt: Test cover of Riverbed Hours, an abstract gradient.
+
+----
+
+Uuid: wbdymdwuzppxwqol
+
+----
+
+Template: image

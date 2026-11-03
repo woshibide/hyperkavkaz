@@ -1,4 +1,4 @@
-/* Base reset and design tokens. No layout or colour decisions yet. */
+/* Base reset, design tokens, and the shared page frame (header and footer). */
 
 /*
  * Fonts come from the Adobe Fonts kit linked in site/snippets/layout.php.
@@ -10,6 +10,24 @@
   --font-sloop-two: "sloop-script-two", sans-serif;
   --font-sloop-three: "sloop-script-three", sans-serif;
   --font-sloop-pro: "sloop-script-pro", sans-serif;
+
+  /* The scripts are for display only; running text and UI use the system sans. */
+  --font-text: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  /* Colour: snow paper, night ink, pomegranate for the current page and errors. */
+  --color-paper: #f2f3f5;
+  --color-field: #ffffff;
+  --color-ink: #1b1d33;
+  --color-ink-hover: #34375a;
+  --color-ink-soft: #5c6076;
+  --color-line: #d3d6de;
+  --color-accent: #9b1c3c;
+
+  /* Layout: the reading measure for running text, the corner of framed boxes. */
+  --measure: 36rem;
+  --radius-box: 1rem;
+
+  color-scheme: light;
 }
 
 *,
@@ -24,8 +42,26 @@ html {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
   margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-text);
+  font-size: 1rem;
+  line-height: 1.7;
   overflow-wrap: break-word;
+}
+
+main {
+  flex: 1;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
 }
 
 h1,
@@ -85,6 +121,19 @@ textarea {
   white-space: nowrap;
 }
 
+.skip-link {
+  position: absolute;
+  top: 0.5rem;
+  left: 50%;
+  z-index: 1;
+  translate: -50% 0;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  text-decoration: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -96,7 +145,1185 @@ textarea {
   }
 }
 
-/* Home: the 3D wordmark fills the viewport behind the page (assets/js/wordmark.js). */
+/*
+ * Page content. A centred column, headed by a giant title in the script.
+ * assets/js/page-title.js fits the title to the column width (and at most half
+ * the screen height); the size here is the fallback without JavaScript.
+ */
+.column {
+  width: 100%;
+  max-width: 48rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+.page-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  padding-block: 4rem 3rem;
+  text-align: center;
+  /* The fitted title's box is shifted to centre its ink; only the empty box may stick out. */
+  overflow-x: clip;
+}
+
+.page-title {
+  width: 100%;
+  margin: 0;
+  font-family: var(--font-sloop-one);
+  font-size: min(25vw, 12rem);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.empty {
+  margin: 0;
+  padding-block: 2rem;
+  color: var(--color-ink-soft);
+  text-align: center;
+}
+
+/* Tabs: one choice out of a few (categories). The current one is filled.
+   Pill lists (an artist's links) look the same, without a current one. */
+.tabs ul,
+.pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tabs a,
+.pill-list a {
+  display: block;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--color-ink-soft);
+  border-radius: 999px;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  text-decoration: none;
+}
+
+.tabs a:hover,
+.pill-list a:hover {
+  border-color: var(--color-ink);
+}
+
+.tabs a[aria-current] {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+/* Small label, such as a post's category. The strong one asks for attention (pre-order). */
+.tag {
+  padding: 0 0.625rem;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  color: var(--color-ink);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+a.tag {
+  text-decoration: none;
+}
+
+a.tag:hover {
+  border-color: var(--color-ink);
+}
+
+.tag-strong {
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+/* A line under the page title: where an artist is based, a record's artist, a post's date. */
+.page-head-note {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+  margin: -1.5rem 0 0;
+  color: var(--color-ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.page-head-note a:not(.tag) {
+  color: var(--color-ink);
+}
+
+/* Sections of a page, each headed in the script. */
+.section {
+  margin-top: 5rem;
+}
+
+.section-title,
+.newsletter h2 {
+  font-family: var(--font-sloop-one);
+  font-size: 3rem;
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.section-title {
+  margin: 0 0 1.5rem;
+  text-align: center;
+}
+
+/* An opening statement, centred and larger than running text. */
+.lead {
+  max-width: var(--measure);
+  margin: 0 auto;
+  font-size: 1.375rem;
+  line-height: 1.6;
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* Running text from the editor: left-aligned for reading, in a centred measure. */
+.prose {
+  max-width: var(--measure);
+  margin-inline: auto;
+}
+
+.lead + .prose {
+  margin-top: 3rem;
+}
+
+.prose > :first-child {
+  margin-top: 0;
+}
+
+.prose > :last-child {
+  margin-bottom: 0;
+}
+
+.prose p,
+.prose ul,
+.prose ol,
+.prose blockquote {
+  margin: 0 0 1.25em;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.25em;
+}
+
+.prose h2 {
+  margin: 2.5em 0 0.75em;
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.prose h3 {
+  margin: 2em 0 0.5em;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.prose blockquote {
+  margin-inline: 0;
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--color-ink);
+  font-size: 1.125rem;
+}
+
+.prose blockquote p {
+  margin: 0;
+}
+
+.prose img {
+  margin-block: 2rem;
+}
+
+/* The main action of a page, such as "Buy". */
+.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 3rem;
+  padding: 0 2rem;
+  border-radius: 999px;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.button:hover {
+  background: var(--color-ink-hover);
+}
+
+/* Way back to the listing a page belongs to. */
+.back-link {
+  margin: 4rem 0 0;
+  text-align: center;
+}
+
+.back-link a {
+  display: inline-block;
+  padding: 0.625rem 0.75rem;
+}
+
+/* A table of labels and values: a record's details, the label's overview. */
+.facts {
+  max-width: var(--measure);
+  margin: 0 auto;
+  border-top: 1px solid var(--color-line);
+}
+
+.facts > div {
+  display: grid;
+  grid-template-columns: 11rem 1fr;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.facts dt,
+.facts dd {
+  margin: 0;
+  padding: 0.875rem 1rem;
+}
+
+.facts dt {
+  /* The smaller label sits on the value's first line, and stays compact when it wraps. */
+  padding-top: 1.07rem;
+  background: var(--color-field);
+  color: var(--color-ink-soft);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 30rem) {
+  .facts > div {
+    grid-template-columns: 7.5rem 1fr;
+  }
+}
+
+/*
+ * Post list: one row per post, the whole row is the link.
+ * Every row is at least as tall as a thumbnail, with or without a cover.
+ */
+.post-list {
+  --thumb-width: 7.5rem;
+
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--color-line);
+  list-style: none;
+}
+
+.post-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-block: 1.25rem;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.post-item-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.375rem;
+  min-width: 0;
+  min-height: calc(var(--thumb-width) * 3 / 4);
+}
+
+.post-item-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.post-item-title a {
+  text-decoration: none;
+}
+
+.post-item-title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.post-item:hover .post-item-title a {
+  text-decoration: underline;
+}
+
+.post-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  order: -1;
+  margin: 0;
+  color: var(--color-ink-soft);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.post-item img {
+  flex: none;
+  width: var(--thumb-width);
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+@media (max-width: 30rem) {
+  .post-list {
+    --thumb-width: 5.5rem;
+  }
+
+  .post-item {
+    gap: 1rem;
+  }
+
+  .post-item-title {
+    font-size: 1rem;
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding-block: 2.5rem 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.pagination ul {
+  display: flex;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pagination a,
+.pagination-placeholder {
+  display: block;
+  min-width: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.pagination a:hover {
+  text-decoration: underline;
+}
+
+.pagination a[aria-current] {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  text-decoration: none;
+}
+
+.pagination-placeholder {
+  visibility: hidden;
+}
+
+/*
+ * Artists: an index by first letter, as in a record shop's racks.
+ * Letters without artists stay in the row, dimmed, so the alphabet keeps its shape.
+ */
+.letter-index ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem;
+  max-width: 32.25rem; /* 13 letters a row: A to M, N to Z */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.letter-index a,
+.letter-index span {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  font-size: 0.875rem;
+  line-height: 1;
+}
+
+.letter-index a {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  text-decoration: none;
+}
+
+.letter-index a:hover {
+  background: var(--color-ink-hover);
+}
+
+.letter-index span {
+  color: var(--color-line);
+}
+
+.artist-group {
+  padding-block: 1.5rem;
+  scroll-margin-top: 1rem;
+  text-align: center;
+}
+
+.artist-group-letter {
+  margin: 0;
+  color: var(--color-ink-soft);
+  font-family: var(--font-sloop-one);
+  font-size: 4rem;
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.artist-group ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.artist-entry {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+}
+
+.artist-entry-name {
+  font-size: clamp(1.75rem, 1.25rem + 2.5vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.artist-entry:hover .artist-entry-name {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
+.artist-entry-meta {
+  color: var(--color-ink-soft);
+  font-size: 0.875rem;
+}
+
+/* Artist: portrait, biography, the records they made here, their links. */
+.portrait {
+  max-width: 22rem;
+  margin-inline: auto;
+}
+
+.portrait img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+.release-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.release {
+  position: relative;
+  width: 11rem;
+}
+
+.release img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.release-title {
+  margin: 0.75rem 0 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.release-title a {
+  text-decoration: none;
+}
+
+.release-title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.release:hover .release-title a {
+  text-decoration: underline;
+}
+
+.release-meta {
+  margin: 0.125rem 0 0;
+  color: var(--color-ink-soft);
+  font-size: 0.8125rem;
+}
+
+@media (max-width: 30rem) {
+  .release {
+    width: calc(50% - 0.625rem);
+  }
+}
+
+/*
+ * Shop: a dense grid of covers, three a row (two on phones), a short last row centred.
+ * Artist above title, as record shops list them; the whole card is the link.
+ */
+.product-grid {
+  --columns: 3;
+  --gap: 1.25rem;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2.5rem var(--gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.product-card {
+  position: relative;
+  display: flex;
+  width: calc((100% - (var(--columns) - 1) * var(--gap)) / var(--columns));
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.product-card img,
+.product-card-blank {
+  order: -2;
+  width: 100%;
+  aspect-ratio: 1;
+  margin-bottom: 0.875rem;
+  background: var(--color-line);
+  object-fit: cover;
+}
+
+.product-card-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.product-card-title a {
+  text-decoration: none;
+}
+
+.product-card-title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.product-card:hover .product-card-title a {
+  text-decoration: underline;
+}
+
+.product-card-artist {
+  order: -1;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.product-card-format {
+  margin: 0;
+  color: var(--color-ink-soft);
+  font-size: 0.8125rem;
+}
+
+.product-card-price {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem 0.5rem;
+  margin: 0.5rem 0 0;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 40rem) {
+  .product-grid {
+    --columns: 2;
+    --gap: 1rem;
+
+    row-gap: 2rem;
+  }
+}
+
+/*
+ * Product: the cover, then a framed purchase box that says what "Buy" does,
+ * the description, a details table and the tracklist.
+ */
+.product-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.product-cover {
+  width: 100%;
+  max-width: 30rem;
+}
+
+.product-cover img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.purchase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 30rem;
+  padding: 2rem 1.5rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-box);
+  background: var(--color-field);
+  text-align: center;
+}
+
+.purchase p {
+  margin: 0;
+}
+
+.purchase-price {
+  font-size: 2rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+.purchase .button {
+  width: 100%;
+  max-width: 18rem;
+  margin-top: 0.5rem;
+}
+
+.purchase-note {
+  color: var(--color-ink-soft);
+  font-size: 0.875rem;
+  text-wrap: balance;
+}
+
+.tracklist {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0;
+  border-top: 1px solid var(--color-line);
+  counter-reset: track;
+  list-style: none;
+}
+
+.tracklist li {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.75rem 0.25rem;
+  border-bottom: 1px solid var(--color-line);
+  counter-increment: track;
+}
+
+.tracklist li::before {
+  content: counter(track);
+  min-width: 1.5rem;
+  color: var(--color-ink-soft);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.tracklist-title {
+  flex: 1;
+}
+
+.tracklist-length,
+.tracklist-total {
+  color: var(--color-ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.tracklist-total {
+  max-width: var(--measure);
+  margin: 0.75rem auto 0;
+  padding-inline: 0.25rem;
+  font-size: 0.875rem;
+  text-align: right;
+}
+
+/*
+ * Post: the cover across the column, the text in the reading measure, then older and newer posts.
+ * The newest and the oldest post have only one neighbour, which then sits centred.
+ */
+.post-cover {
+  margin-bottom: 3rem;
+}
+
+.post-cover img {
+  width: 100%;
+}
+
+.post-pager {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 5rem;
+}
+
+.post-pager a {
+  display: flex;
+  flex: 0 1 calc(50% - 0.5rem);
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-box);
+  background: var(--color-field);
+  text-decoration: none;
+}
+
+.post-pager a:hover {
+  border-color: var(--color-ink);
+}
+
+.post-pager a:hover .post-pager-title {
+  text-decoration: underline;
+}
+
+.post-pager-newer {
+  text-align: right;
+}
+
+.post-pager-label {
+  color: var(--color-ink-soft);
+  font-size: 0.8125rem;
+}
+
+.post-pager-title {
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+@media (max-width: 30rem) {
+  .post-pager a {
+    flex-basis: 100%;
+  }
+
+  .post-pager-newer {
+    text-align: left;
+  }
+}
+
+/* About: a statement, the story, the label at a glance, and its history on a line. */
+.timeline {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline li {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  gap: 1.5rem;
+}
+
+.timeline time {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.timeline p {
+  position: relative;
+  margin: 0;
+  padding: 0 0 1.5rem 1.5rem;
+  border-left: 1px solid var(--color-line);
+}
+
+.timeline li:last-child p {
+  padding-bottom: 0;
+}
+
+.timeline p::before {
+  content: "";
+  position: absolute;
+  top: 0.6em;
+  left: -0.3125rem;
+  width: 0.5625rem;
+  height: 0.5625rem;
+  border-radius: 50%;
+  background: var(--color-ink);
+}
+
+/*
+ * Press: a framed contact, the coverage as a table (stacked on phones),
+ * and the press kit as download cards.
+ */
+.lead-text {
+  max-width: var(--measure);
+  margin-inline: auto;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.lead-text p {
+  margin: 0;
+}
+
+.contact-card {
+  max-width: 28rem;
+  margin: 3rem auto 0;
+  padding: 1.75rem 1.5rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-box);
+  background: var(--color-field);
+  text-align: center;
+}
+
+.contact-card h2 {
+  margin: 0;
+  color: var(--color-ink-soft);
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.contact-card-email {
+  margin: 0.25rem 0 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.coverage {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.coverage th {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--color-ink);
+  color: var(--color-ink-soft);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  text-align: left;
+}
+
+.coverage td {
+  padding: 0.875rem 0.75rem;
+  border-bottom: 1px solid var(--color-line);
+  vertical-align: top;
+}
+
+.coverage-date {
+  color: var(--color-ink-soft);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.coverage-outlet {
+  font-weight: 600;
+}
+
+@media (max-width: 40rem) {
+  .coverage thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .coverage tr {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.75rem;
+    padding: 0.875rem 0;
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .coverage td {
+    padding: 0;
+    border: 0;
+  }
+
+  .coverage-headline {
+    flex-basis: 100%;
+  }
+}
+
+.downloads {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.downloads li {
+  width: 14rem;
+}
+
+.downloads a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  height: 100%;
+  padding: 1.5rem 1rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-box);
+  background: var(--color-field);
+  text-align: center;
+  text-decoration: none;
+}
+
+.downloads a:hover {
+  border-color: var(--color-ink);
+}
+
+.downloads a:hover .downloads-name {
+  text-decoration: underline;
+}
+
+.downloads-type {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.downloads-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.downloads-size {
+  color: var(--color-ink-soft);
+  font-size: 0.8125rem;
+}
+
+@media (max-width: 30rem) {
+  .downloads li {
+    width: calc(50% - 0.5rem);
+  }
+}
+
+/* Links: one large button per link, with the site it opens underneath the name. */
+.link-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.link-stack a {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 4.5rem;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-field);
+  text-decoration: none;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.link-stack a:hover {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.link-stack-label {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.link-stack-host {
+  color: var(--color-ink-soft);
+  font-size: 0.8125rem;
+}
+
+.link-stack a:hover .link-stack-host {
+  color: inherit;
+}
+
+/* Legal pages: a framed contents list, then numbered articles. */
+.contents {
+  max-width: var(--measure);
+  margin: 0 auto 3rem;
+  padding: 1.5rem 1.75rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-box);
+  background: var(--color-field);
+}
+
+.contents h2 {
+  margin: 0 0 0.5rem;
+  color: var(--color-ink-soft);
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.contents ol {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.contents li::marker {
+  color: var(--color-ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.contents a {
+  display: inline-block;
+  padding-block: 0.125rem;
+  text-decoration: none;
+}
+
+.contents a:hover {
+  text-decoration: underline;
+}
+
+.legal-text {
+  counter-reset: article;
+}
+
+.legal-text h2 {
+  counter-increment: article;
+  scroll-margin-top: 1rem;
+}
+
+.legal-text h2::before {
+  content: "Article " counter(article);
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--color-ink-soft);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+
+/* Newsletter page: the sign-up form in a frame, with the page's own introduction. */
+.newsletter-panel {
+  max-width: 32rem;
+  margin-inline: auto;
+  padding: 2.5rem 1.5rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-box);
+  background: var(--color-field);
+}
+
+.newsletter-panel-text {
+  margin-bottom: 0.5rem;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.newsletter-panel-text p {
+  margin: 0 0 0.75rem;
+}
+
+/* Not found: every section as a tile, so the next step is one tap away. */
+.sitemap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 3rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sitemap a {
+  display: grid;
+  place-items: center;
+  min-height: 7rem;
+  padding: 1rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-box);
+  background: var(--color-field);
+  font-family: var(--font-sloop-one);
+  font-size: 2.25rem;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.sitemap a:hover {
+  border-color: var(--color-ink);
+}
+
+@media (max-width: 30rem) {
+  .sitemap {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Covers and portraits keep a faint edge, so pale artwork does not melt into the paper. */
+.portrait img,
+.release img,
+.product-card img,
+.product-cover img,
+.post-cover img,
+.post-item img {
+  outline: 1px solid rgb(27 29 51 / 0.08);
+  outline-offset: -1px;
+}
+
+/*
+ * Home: the 3D wordmark fills the viewport behind the page (assets/js/wordmark.js).
+ * The empty main takes a full screen, so the footer starts below the fold
+ * and its paper background slides over the wordmark when scrolled up.
+ */
+main:has(> .wordmark) {
+  min-height: 100dvh;
+}
+
 .wordmark {
   position: fixed;
   inset: 0;
@@ -104,4 +1331,166 @@ textarea {
   width: 100%;
   height: 100%;
   pointer-events: none;
+}
+
+/*
+ * Page frame. The composition is centred: the wordmark, the navigation
+ * and every footer row sit on the vertical axis of the page.
+ */
+
+/* Links in a row (navigation, socials): no underline until hovered, generous hit areas. */
+.site-nav ul,
+.socials {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav a,
+.socials a {
+  display: block;
+  padding: 0.625rem 0.75rem;
+  text-decoration: none;
+}
+
+.site-nav a:hover,
+.socials a:hover,
+.legal a:hover {
+  text-decoration: underline;
+}
+
+.site-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2.5rem 1rem 0;
+}
+
+.brand {
+  display: block;
+  width: clamp(10rem, 7rem + 12vw, 14rem);
+  padding-block: 0.25rem;
+}
+
+.brand svg {
+  width: 100%;
+  fill: currentColor;
+}
+
+.site-nav a {
+  font-size: 0.9375rem;
+  letter-spacing: 0.01em;
+}
+
+/* The current page, or the section it belongs to. */
+.site-nav a[aria-current],
+.legal a[aria-current] {
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 2px;
+}
+
+.site-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+  padding: 5rem 1rem 2rem;
+  background: var(--color-paper);
+  text-align: center;
+}
+
+.newsletter {
+  width: 100%;
+  max-width: 28rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.newsletter h2 {
+  margin: 0;
+}
+
+.newsletter p {
+  margin: 0.25rem 0 0;
+  color: var(--color-ink-soft);
+  text-wrap: balance;
+}
+
+.newsletter form {
+  margin-top: 1.5rem;
+}
+
+.newsletter label {
+  display: block;
+  margin-bottom: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.newsletter-field {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.newsletter input,
+.newsletter button {
+  min-height: 3rem;
+  border-radius: 999px;
+}
+
+.newsletter input {
+  flex: 1;
+  min-width: 0;
+  padding: 0 1.25rem;
+  border: 1px solid var(--color-ink-soft);
+  background: var(--color-field);
+  color: var(--color-ink);
+}
+
+.newsletter input[aria-invalid="true"] {
+  border-color: var(--color-accent);
+}
+
+.newsletter button {
+  padding: 0 1.5rem;
+  border: 0;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  cursor: pointer;
+}
+
+.newsletter button:hover {
+  background: var(--color-ink-hover);
+}
+
+.newsletter .newsletter-error {
+  margin-top: 0.5rem;
+  color: var(--color-accent);
+  font-size: 0.875rem;
+}
+
+.newsletter-error:empty {
+  display: none;
+}
+
+.legal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.25rem 1.25rem;
+  margin: 0;
+  color: var(--color-ink-soft);
+  font-size: 0.8125rem;
+}
+
+.legal-mark {
+  color: var(--color-ink);
+  font-family: var(--font-sloop-one);
+  font-size: 1.5rem;
+  line-height: 1;
 }

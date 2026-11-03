@@ -2,4 +2,27 @@ Title: Links
 
 ----
 
-Links: 
+Links:
+
+- 
+  label: Bandcamp
+  link: https://hyperkavkaz.bandcamp.com
+- 
+  label: Instagram
+  link: https://www.instagram.com/hyperkavkaz
+- 
+  label: YouTube
+  link: https://www.youtube.com/@hyperkavkaz
+- 
+  label: SoundCloud
+  link: https://soundcloud.com/hyperkavkaz
+- 
+  label: Mixcloud
+  link: https://www.mixcloud.com/hyperkavkaz
+- 
+  label: Resident Advisor
+  link: https://ra.co/labels/hyperkavkaz
+
+----
+
+Uuid: 8gwxxgen1blwxavg

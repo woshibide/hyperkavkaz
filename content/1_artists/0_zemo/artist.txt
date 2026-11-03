@@ -1,0 +1,31 @@
+Title: Zemo
+
+----
+
+Text: {"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Zemo writes short, melodic electronic songs about trains, rain and leaving home."}]},{"type":"paragraph","content":[{"type":"text","text":"This biography is test content for the page design."}]}]}
+
+----
+
+Links:
+
+- 
+  label: Bandcamp
+  link: https://example.com/zemo/bandcamp
+- 
+  label: Instagram
+  link: https://example.com/zemo/instagram
+- 
+  label: SoundCloud
+  link: https://example.com/zemo/soundcloud
+
+----
+
+Origin: Kutaisi
+
+----
+
+Cover: 
+
+----
+
+Uuid: aw8rcu5ruwamzo0p

@@ -1,0 +1,34 @@
+Title: Aragvi Drift
+
+----
+
+Text: {"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Aragvi Drift records long, slow pieces on a four-track tape machine, mostly at night, mostly near water. The project started as a way to keep field recordings from the Aragvi valley and grew into a live set built from loops, a bowed bass and a broken organ."}]},{"type":"paragraph","content":[{"type":"text","text":"This biography is test content for the page design."}]}]}
+
+----
+
+Links:
+
+- 
+  label: Bandcamp
+  link: >
+    https://example.com/aragvi-drift/bandcamp
+- 
+  label: Instagram
+  link: >
+    https://example.com/aragvi-drift/instagram
+- 
+  label: SoundCloud
+  link: >
+    https://example.com/aragvi-drift/soundcloud
+
+----
+
+Origin: Tbilisi
+
+----
+
+Cover: - file://nhxyko2qhpfwej9c
+
+----
+
+Uuid: lexllxhxzopqx32b

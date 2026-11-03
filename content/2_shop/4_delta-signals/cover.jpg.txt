@@ -1,0 +1,9 @@
+Alt: Test cover of Delta Signals, an abstract gradient.
+
+----
+
+Uuid: kxoen2m9obravmxb
+
+----
+
+Template: image

@@ -1,0 +1,27 @@
+title: Legal
+icon: page
+
+columns:
+  main:
+    width: 2/3
+    sections:
+      fields:
+        type: fields
+        fields:
+          text:
+            type: tiptap
+            uploads: image
+            size: huge
+            help: Start each article with a level 2 heading. Articles are numbered and listed in the contents automatically.
+  sidebar:
+    width: 1/3
+    sections:
+      meta:
+        type: fields
+        fields:
+          effective:
+            label: In effect since
+            type: date
+          revised:
+            label: Last revised
+            type: date

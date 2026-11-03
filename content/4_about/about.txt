@@ -1,0 +1,59 @@
+Title: About
+
+----
+
+Lead: HYPERKAVKAZ is an independent record label for music from the Caucasus, released on vinyl, cassette and digital, and played in Japan.
+
+----
+
+Text: {"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"We started the label in 2026 to give artists from Georgia, Armenia, Azerbaijan and the North Caucasus a home far from home. Every release is mastered, pressed and shipped with care, and every artist keeps the rights to their music."}]},{"type":"paragraph","content":[{"type":"text","text":"We put on listening sessions and club nights in Tokyo, Osaka and Kyoto, and bring artists on tour. This text is test content."}]}]}
+
+----
+
+Facts:
+
+- 
+  label: Name
+  value: HYPERKAVKAZ
+- 
+  label: Founded
+  value: April 2026
+- 
+  label: Based in
+  value: Tokyo and Tbilisi
+- 
+  label: Releases
+  value: Vinyl, cassette, CD and digital
+- 
+  label: Sold through
+  value: Bandcamp
+- 
+  label: Contact
+  value: hello@example.com
+
+----
+
+History:
+
+- 
+  date: 2026-04-01
+  event: The label is founded in Tokyo.
+- 
+  date: 2026-04-28
+  event: Launch party in Shibuya.
+- 
+  date: 2026-05-15
+  event: 'First release: Aragvi Drift, Riverbed Hours (HK-001).'
+- 
+  date: 2026-06-03
+  event: Pop-up shop in Kyoto.
+- 
+  date: 2026-09-30
+  event: First tour, five cities in Japan.
+- 
+  date: 2026-10-18
+  event: Release night in Tokyo.
+
+----
+
+Uuid: 8ygjz2xmpsteokhd

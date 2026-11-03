@@ -1,0 +1,9 @@
+Alt: Test cover of Snowline, an abstract gradient.
+
+----
+
+Uuid: ktzjz3txrx7unhrt
+
+----
+
+Template: image

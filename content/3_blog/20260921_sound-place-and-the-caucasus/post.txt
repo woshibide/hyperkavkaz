@@ -1,0 +1,21 @@
+Title: Interview: on field recordings, long drives through the mountains, and finishing a record far from home
+
+----
+
+Text: {"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"This post is test content for the page design. The first paragraph sets the scene: where it happened, who was there, and why it mattered."}]},{"type":"paragraph","content":[{"type":"text","text":"A second paragraph goes deeper. Running text sits in a narrower measure than the column, so lines stay easy to read, around 65 characters each."}]},{"type":"heading","attrs":{"level":2},"content":[{"type":"text","text":"A heading inside a post"}]},{"type":"paragraph","content":[{"type":"text","text":"Headings break longer posts into parts. Lists, quotes and images follow the same rhythm."}]},{"type":"blockquote","content":[{"type":"paragraph","content":[{"type":"text","text":"We wanted the room to feel like a long drive at night: dark, warm, and moving."}]}]},{"type":"bulletList","content":[{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Doors open at 19:00"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Live sets from 20:00"}]}]},{"type":"listItem","content":[{"type":"paragraph","content":[{"type":"text","text":"Records on sale at the door"}]}]}]},{"type":"paragraph","content":[{"type":"text","text":"The last paragraph closes the post and points to what comes next."}]}]}
+
+----
+
+Category: media
+
+----
+
+Date: 2026-09-21
+
+----
+
+Cover: - file://mlkmbovmj6azk2hj
+
+----
+
+Uuid: kvzcnvlsxm0s4amb

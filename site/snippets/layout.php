@@ -22,10 +22,13 @@
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <header>
-    <a href="<?= $site->url() ?>" translate="no"<?= $page->isHomePage() ? ' aria-current="page"' : '' ?>><?= $site->title()->esc() ?></a>
+  <header class="site-header">
+    <a class="brand" href="<?= $site->url() ?>" translate="no"<?= $page->isHomePage() ? ' aria-current="page"' : '' ?>>
+      <span class="visually-hidden"><?= $site->title()->esc() ?></span>
+      <?= svg('assets/svg/hyperkavkaz.svg') ?>
+    </a>
     <?php if (($items = $site->children()->listed())->isNotEmpty()): ?>
-      <nav aria-label="Main">
+      <nav class="site-nav" aria-label="Main">
         <ul>
           <?php foreach ($items as $item): ?>
             <li><a href="<?= $item->url() ?>"<?= $item->isActive() ? ' aria-current="page"' : ($item->isOpen() ? ' aria-current="true"' : '') ?>><?= $item->title()->esc() ?></a></li>
@@ -39,13 +42,33 @@
     <?= $slot ?>
   </main>
 
-  <footer>
+  <footer class="site-footer">
     <?php if ($page->intendedTemplate()->name() !== 'newsletter'): ?>
       <?php snippet('newsletter') ?>
     <?php endif ?>
-    <?php foreach (pages('links', 'privacy') as $item): ?>
-      <a href="<?= $item->url() ?>"<?= $item->isActive() ? ' aria-current="page"' : '' ?>><?= $item->title()->esc() ?></a>
-    <?php endforeach ?>
+
+    <?php
+    // Filled in the Panel, Site > Settings. Empty ones are left out.
+    $socials = array_filter([
+      'Bandcamp'  => $site->bandcamp(),
+      'Instagram' => $site->instagram(),
+      'YouTube'   => $site->youtube(),
+    ], fn ($url) => $url->isNotEmpty());
+    ?>
+    <?php if ($socials !== []): ?>
+      <ul class="socials" aria-label="Socials">
+        <?php foreach ($socials as $label => $url): ?>
+          <li><a href="<?= $url->esc('attr') ?>" rel="me"><?= $label ?></a></li>
+        <?php endforeach ?>
+      </ul>
+    <?php endif ?>
+
+    <p class="legal">
+      <?php foreach (pages('links', 'privacy') as $item): ?>
+        <a href="<?= $item->url() ?>"<?= $item->isActive() ? ' aria-current="page"' : '' ?>><?= $item->title()->esc() ?></a>
+      <?php endforeach ?>
+      <span class="legal-mark" translate="no">Hyperkavkaz</span>
+    </p>
   </footer>
 
   <?php snippet('matomo') ?>

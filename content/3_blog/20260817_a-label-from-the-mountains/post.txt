@@ -1,0 +1,15 @@
+Title: Feature: a label from the mountains
+
+----
+
+Category: media
+
+----
+
+Date: 2026-08-17
+
+----
+
+Cover:
+
+- cover.jpg

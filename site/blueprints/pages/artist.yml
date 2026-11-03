@@ -14,13 +14,30 @@ columns:
             type: tiptap
             uploads: image
             size: large
+          links:
+            label: Links
+            type: structure
+            help: The artist's own profiles (Bandcamp, Instagram, website), in the order shown here.
+            fields:
+              label:
+                type: text
+                required: true
+              link:
+                label: URL
+                type: url
+                required: true
   sidebar:
     width: 1/3
     sections:
       meta:
         type: fields
         fields:
+          origin:
+            label: Based in
+            type: text
+            help: City or region, shown under the name.
           cover:
+            label: Portrait
             type: files
             multiple: false
             uploads: image

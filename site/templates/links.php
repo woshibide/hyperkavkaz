@@ -1,12 +1,22 @@
 <?php snippet('layout', slots: true) ?>
-  <h1><?= $page->title()->esc() ?></h1>
-  <?php if (($links = $page->links()->toStructure())->isEmpty()): ?>
-    <p>No links yet.</p>
-  <?php else: ?>
-    <ul>
-      <?php foreach ($links as $item): ?>
-        <li><a href="<?= $item->link()->esc('attr') ?>"><?= $item->label()->esc() ?></a></li>
-      <?php endforeach ?>
-    </ul>
-  <?php endif ?>
+  <div class="column">
+    <?php snippet('page-head') ?>
+    <?php if (($links = $page->links()->toStructure())->isEmpty()): ?>
+      <p class="empty">No links yet.</p>
+    <?php else: ?>
+      <ul class="link-stack">
+        <?php foreach ($links as $item): ?>
+          <?php $host = parse_url($item->link()->value(), PHP_URL_HOST) ?>
+          <li>
+            <a href="<?= $item->link()->esc('attr') ?>">
+              <span class="link-stack-label"><?= $item->label()->esc() ?></span>
+              <?php if (is_string($host)): ?>
+                <span class="link-stack-host"><?= esc(preg_replace('/^www\./', '', $host)) ?></span>
+              <?php endif ?>
+            </a>
+          </li>
+        <?php endforeach ?>
+      </ul>
+    <?php endif ?>
+  </div>
 <?php endsnippet() ?>

@@ -1,0 +1,34 @@
+Title: Black Sea Static
+
+----
+
+Text: {"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Black Sea Static is the harbour-town project of a sound engineer who spent ten years mixing other people's records. The music is dub-heavy, patient and very loud in the low end."}]},{"type":"paragraph","content":[{"type":"text","text":"This biography is test content for the page design."}]}]}
+
+----
+
+Links:
+
+- 
+  label: Bandcamp
+  link: >
+    https://example.com/black-sea-static/bandcamp
+- 
+  label: Instagram
+  link: >
+    https://example.com/black-sea-static/instagram
+- 
+  label: SoundCloud
+  link: >
+    https://example.com/black-sea-static/soundcloud
+
+----
+
+Origin: Batumi
+
+----
+
+Cover: - file://ujtsghrya5bgi4rn
+
+----
+
+Uuid: tmbppmofeyqhwr9i
