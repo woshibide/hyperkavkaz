@@ -1,10 +1,11 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <?php $stylesheet = asset('assets/css/main.css') ?>
   <?= htmlhead()
     ->recommended_minimum()
     ->title(($page->isHomePage() ? '' : $page->title()->esc() . ' | ') . $site->title()->esc())
-    ->link_css(['assets/css/main.css'])
+    ->link_css([$stylesheet->url() . '?v=' . hash_file('xxh3', $stylesheet->root())])
     ->meta_robots(option('hyperkavkaz.preview') ? 'noindex, nofollow' : null)
     ->link_canonical(option('hyperkavkaz.preview') && $page->isErrorPage() ? [] : [$page->url()])
   ?>
