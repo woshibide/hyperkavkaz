@@ -8,15 +8,7 @@
     ->meta_robots()
     ->link_canonical([$page->url()])
   ?>
-  <?php /* The import map must come before the first module script. */ ?>
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "<?= url('assets/js/vendor/three/three.module.js') ?>",
-        "three/addons/": "<?= url('assets/js/vendor/three/addons/') ?>"
-      }
-    }
-  </script>
+  <?php snippet('three-import-map') ?>
   <?= js('assets/js/main.js', ['type' => 'module']) ?>
 </head>
 <body>
