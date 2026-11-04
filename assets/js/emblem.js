@@ -4,6 +4,15 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 const canvas = document.querySelector('.emblem-canvas');
 const stage = canvas.closest('.emblem');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const spotLighting = 'getSpotLightInfo( spotLight, geometryPosition, directLight );';
+
+function excludeInsetLight(shader) {
+  // The inset is the only spotlight. Preserve the leather's other lights and reflections.
+  shader.fragmentShader = shader.fragmentShader.replace(
+    '#include <lights_fragment_begin>',
+    THREE.ShaderChunk.lights_fragment_begin.replace(spotLighting, spotLighting + "\n\t\tdirectLight.color = vec3( 0.0 );"),
+  );
+}
 
 function studioEnvironment(renderer) {
   const studio = new THREE.Scene();
@@ -70,6 +79,9 @@ async function showEmblem() {
       if (!part.isMesh) return;
       part.castShadow = true;
       part.receiveShadow = true;
+      if (part.material.name === 'Black pebbled leather') {
+        part.material.onBeforeCompile = excludeInsetLight;
+      }
       if (part.material.userData.enamelRelief) {
         part.material.bumpMap = enamelBump;
         part.material.bumpScale = 0.017;
@@ -115,43 +127,86 @@ async function showEmblem() {
       render();
     }
 
-    function settle() {
+    const tilt = new THREE.Vector2();
+    const targetTilt = new THREE.Vector2();
+    const duration = 2400;
+    let revealStart = null;
+    let previousFrame = null;
+    let contextLost = false;
+
+    function stopAnimation() {
       renderer.setAnimationLoop(null);
+      previousFrame = null;
+    }
+
+    function animate(now) {
+      const elapsed = previousFrame === null ? 1 / 60 : Math.min((now - previousFrame) / 1000, 0.1);
+      previousFrame = now;
+      tilt.lerp(targetTilt, 1 - Math.exp(-8 * elapsed));
+      const turn = revealStart === null ? 0 : 1 - THREE.MathUtils.smootherstep(now - revealStart, 0, duration);
+
+      if (turn === 0 && tilt.distanceToSquared(targetTilt) < 0.0000001) {
+        revealStart = null;
+        tilt.copy(targetTilt);
+        stopAnimation();
+      }
+
+      pivot.rotation.set(0.06 * turn + tilt.x, -0.38 * turn + tilt.y, 0);
+      render();
+    }
+
+    function settle() {
+      stopAnimation();
+      revealStart = null;
+      tilt.set(0, 0);
+      targetTilt.set(0, 0);
       pivot.rotation.set(0, 0, 0);
       render();
     }
 
+    stage.addEventListener('pointermove', (event) => {
+      if (event.pointerType !== 'mouse' || reducedMotion.matches || contextLost) return;
+
+      const { left, top, width, height } = stage.getBoundingClientRect();
+      const x = THREE.MathUtils.clamp(2 * (event.clientX - left) / width - 1, -1, 1);
+      const y = THREE.MathUtils.clamp(2 * (event.clientY - top) / height - 1, -1, 1);
+      targetTilt.set(y * 0.05, x * 0.07);
+      renderer.setAnimationLoop(animate);
+    });
+
+    function resetPointerTilt() {
+      if (targetTilt.lengthSq() === 0 || reducedMotion.matches || contextLost) return;
+      targetTilt.set(0, 0);
+      renderer.setAnimationLoop(animate);
+    }
+
+    stage.addEventListener('pointerleave', resetPointerTilt);
+    window.addEventListener('blur', resetPointerTilt);
     new ResizeObserver(resize).observe(canvas);
     reducedMotion.addEventListener('change', () => {
-      if (reducedMotion.matches) settle();
+      if (reducedMotion.matches && !contextLost) settle();
     });
 
     canvas.addEventListener('webglcontextlost', () => {
-      renderer.setAnimationLoop(null);
+      contextLost = true;
+      stopAnimation();
       stage.classList.remove('is-rendered');
     });
     canvas.addEventListener('webglcontextrestored', () => {
+      contextLost = false;
       lightScene();
       settle();
       stage.classList.add('is-rendered');
     });
 
-    const duration = 2400;
-    pivot.rotation.set(0.06, -0.38, 0);
-    if (reducedMotion.matches) pivot.rotation.set(0, 0, 0);
+    // Open at an angle to show the relief, then ease into the pointer tilt.
+    if (!reducedMotion.matches) {
+      revealStart = performance.now();
+      pivot.rotation.set(0.06, -0.38, 0);
+      renderer.setAnimationLoop(animate);
+    }
     resize();
     stage.classList.add('is-rendered');
-
-    // Open from a slight angle to show the relief, then leave the panels front-on.
-    if (!reducedMotion.matches) {
-      const start = performance.now();
-      renderer.setAnimationLoop((now) => {
-        const turn = 1 - THREE.MathUtils.smootherstep(now - start, 0, duration);
-        pivot.rotation.set(0.06 * turn, -0.38 * turn, 0);
-        if (turn === 0) settle();
-        else render();
-      });
-    }
   } catch (error) {
     renderer.dispose();
     throw error;
