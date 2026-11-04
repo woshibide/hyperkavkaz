@@ -22,7 +22,13 @@ if (!$newsletter = page('newsletter')) {
     <h2 id="newsletter-title">Newsletter</h2>
     <p>New releases and events, by email. Unsubscribe any time.</p>
   <?php endif ?>
-  <?php if ($done): ?>
+  <?php if (option('hyperkavkaz.preview')): ?>
+    <p>Sign-up opens when the site launches.</p>
+    <div class="newsletter-field">
+      <input type="email" aria-label="Email address" disabled>
+      <button type="button" disabled>Subscribe</button>
+    </div>
+  <?php elseif ($done): ?>
     <p role="status">Thanks. You're on the list.</p>
   <?php else: ?>
     <form method="post" action="<?= $newsletter->url() ?>#newsletter">

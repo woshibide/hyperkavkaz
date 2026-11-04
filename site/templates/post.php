@@ -4,7 +4,7 @@
       <p class="page-head-note">
         <?php snippet('date', ['date' => $page->date()]) ?>
         <?php if ($label = $page->categoryLabel()): ?>
-          <a class="tag" href="<?= $page->parent()->url(['params' => ['category' => $page->category()->value()]]) ?>"><?= esc($label) ?></a>
+          <a class="tag" href="<?= $page->parent()->url(['query' => ['category' => $page->category()->value()]]) ?>"><?= esc($label) ?></a>
         <?php endif ?>
       </p>
     <?php endsnippet() ?>

@@ -6,7 +6,11 @@
  * Secrets come from environment variables (set them in the fortrabbit dashboard).
  * https://getkirby.com/docs/reference/system/options
  */
+$preview = getenv('HYPERKAVKAZ_PREVIEW') === '1';
+
 return [
+  'hyperkavkaz.preview' => $preview,
+  ...($preview ? ['url' => 'https://woshibide.github.io/hyperkavkaz'] : []),
   'debug' => false,
 
   // (image:) tags get width and height from the file, to prevent layout shift
@@ -21,7 +25,7 @@ return [
   // and served by Apache (.htaccess) to anonymous GET requests.
   'cache' => [
     'pages' => [
-      'active' => true,
+      'active' => !$preview,
       'type'   => 'static',
     ],
   ],
@@ -29,7 +33,7 @@ return [
   // Admin bar on the frontend for logged-in Panel users
   'ready' => fn ($kirby) => [
     'pechente.kirby-admin-bar' => [
-      'active' => $kirby->user() !== null,
+      'active' => !option('hyperkavkaz.preview') && $kirby->user() !== null,
     ],
   ],
 

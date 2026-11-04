@@ -71,3 +71,7 @@ Icon
 
 /.kirby-mcp
 /site/commands/mcp
+
+# Generated GitHub Pages preview
+/_preview/
+/.preview-*/

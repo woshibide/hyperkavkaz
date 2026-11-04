@@ -3,22 +3,18 @@
 use Kirby\Exception\NotFoundException;
 
 return function ($page) {
-  $posts = $page->children()->listed()->sortBy('date', 'desc');
+  $category = param('category');
+  $number = param('page');
 
-  // Optional filter: /blog/category:events
-  if ($category = param('category')) {
-    if (array_key_exists($category, PostPage::CATEGORIES) === false) {
-      throw new NotFoundException('Unknown category');
+  if ($category !== null || $number !== null) {
+    if (($category !== null && !array_key_exists($category, PostPage::CATEGORIES)) ||
+        ($number !== null && !preg_match('/^[1-9][0-9]*$/D', $number))) {
+      throw new NotFoundException('Unknown blog filter or page');
     }
 
-    $posts = $posts->filterBy('category', $category);
+    $query = array_filter(['category' => $category, 'page' => $number]);
+    go($page->url(['query' => $query]), 301);
   }
 
-  $posts = $posts->paginate(10);
-
-  return [
-    'posts'      => $posts,
-    'category'   => $category,
-    'pagination' => $posts->pagination(),
-  ];
+  return ['posts' => $page->children()->listed()->sortBy('date', 'desc')];
 };

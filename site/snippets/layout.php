@@ -5,8 +5,8 @@
     ->recommended_minimum()
     ->title(($page->isHomePage() ? '' : $page->title()->esc() . ' | ') . $site->title()->esc())
     ->link_css(['https://use.typekit.net/mrh7ota.css', 'assets/css/main.css'])
-    ->meta_robots()
-    ->link_canonical([$page->url()])
+    ->meta_robots(option('hyperkavkaz.preview') ? 'noindex, nofollow' : null)
+    ->link_canonical(option('hyperkavkaz.preview') && $page->isErrorPage() ? [] : [$page->url()])
   ?>
   <?php /* The import map must come before the first module script. */ ?>
   <script type="importmap">
@@ -71,6 +71,8 @@
     </p>
   </footer>
 
-  <?php snippet('matomo') ?>
+  <?php if (!option('hyperkavkaz.preview')): ?>
+    <?php snippet('matomo') ?>
+  <?php endif ?>
 </body>
 </html>
