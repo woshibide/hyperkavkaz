@@ -41,7 +41,7 @@ class PageLinks(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
-        for name in ("href", "src", "data-src", "poster"):
+        for name in ("href", "src", "data-src", "data-bump-src", "poster"):
             if attrs.get(name):
                 self.links.append(attrs[name])
         if attrs.get("srcset"):

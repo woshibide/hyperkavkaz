@@ -7,14 +7,13 @@ const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
 function studioEnvironment(renderer) {
   const studio = new THREE.Scene();
-  studio.background = new THREE.Color().setScalar(0.055);
+  studio.background = new THREE.Color().setScalar(0.025);
 
   // Softboxes are visible in the metal's reflections, outside the camera scene.
   const softboxes = [
-    { position: [-2, 3, 4], size: [5, 3], strength: 2.4 },
-    { position: [3, 0.5, 4], size: [2, 5], strength: 1.45 },
-    { position: [0, -3, 3], size: [5, 1], strength: 0.75 },
-    { position: [-3, 1, -2], size: [2, 4], strength: 1.8 },
+    { position: [0, 0.35, 6], size: [10, 8], strength: 0.60 },
+    { position: [0, 3.5, 1.4], size: [4.5, 1.3], strength: 3.6 },
+    { position: [-3.1, -2.6, 1.1], size: [3.4, 1.1], strength: 3 },
   ];
   for (const { position, size, strength } of softboxes) {
     const box = new THREE.Mesh(
@@ -36,21 +35,52 @@ function studioEnvironment(renderer) {
   return environment;
 }
 
+function lightEmblem(scene) {
+  const top = new THREE.DirectionalLight(0xfffaf5, 1.45);
+  top.position.set(0.15, 3.8, 2.6);
+  top.castShadow = true;
+  top.shadow.mapSize.set(1024, 1024);
+  Object.assign(top.shadow.camera, { left: -1.65, right: 1.65, top: 1.85, bottom: -1.85, near: 2, far: 7 });
+  top.shadow.normalBias = 0.008;
+  top.shadow.bias = -0.00015;
+  top.shadow.radius = 2;
+
+  const lowerLeft = new THREE.PointLight(0xe6edff, 2.8, 4.5);
+  lowerLeft.position.set(-1.53, -1.30, 0.72);
+
+  const inset = new THREE.SpotLight(0xfff5f1, 4.8, 5, 0.62, 0.94);
+  inset.position.set(-0.06, -0.26, 1.42);
+  inset.target.position.set(0.02, -0.22, 0);
+  scene.add(top, lowerLeft, inset, inset.target);
+}
+
 async function showEmblem() {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   try {
-    const { scene: model } = await new GLTFLoader().loadAsync(canvas.dataset.src);
+    const [{ scene: model }, enamelBump] = await Promise.all([
+      new GLTFLoader().loadAsync(canvas.dataset.src),
+      new THREE.TextureLoader().loadAsync(canvas.dataset.bumpSrc),
+    ]);
+    // This is a linear height texture in glTF's UV orientation.
+    enamelBump.flipY = false;
     const bounds = new THREE.Box3().setFromObject(model);
     const size = bounds.getSize(new THREE.Vector3());
     model.position.sub(bounds.getCenter(new THREE.Vector3()));
+    model.traverse((part) => {
+      if (!part.isMesh) return;
+      part.castShadow = true;
+      part.receiveShadow = true;
+      if (part.material.userData.enamelRelief) {
+        part.material.bumpMap = enamelBump;
+        part.material.bumpScale = 0.017;
+      }
+    });
 
     const pivot = new THREE.Group();
     pivot.add(model);
     const scene = new THREE.Scene();
     scene.add(pivot);
-    const key = new THREE.DirectionalLight(0xfff6f0, 1.65);
-    key.position.set(-3, 4, 6);
-    scene.add(key);
+    lightEmblem(scene);
 
     let environment;
     function lightScene() {
@@ -61,6 +91,7 @@ async function showEmblem() {
     lightScene();
 
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 20);
     camera.position.z = 7;

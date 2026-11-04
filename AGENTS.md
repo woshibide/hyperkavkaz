@@ -99,7 +99,8 @@ Main navigation is the listed top-level pages, in folder order: Artists, Shop, B
 - `assets/js/page-title.js`: fits each `.page-title` to its column by the ink of the glyphs (measured on a canvas, because script swashes overflow the text box), capped at half the viewport height, refitted on resize.
   Without JavaScript the CSS fallback size applies.
 - `assets/js/emblem.js`: loads the home shield with named panel hit targets and honours reduced motion.
-  Rebuild the model from the supplied Blender and JPEG sources with `scripts/export-emblem.py`.
+  Rebuild the model and enamel bump map with `scripts/export-emblem.py`, using the supplied Blender scene, JPEG emblem and September lighting reference.
+  The GLB embeds the leather albedo, normal and packed ORM textures, plus albedo and ORM for the red enamel.
 - `assets/js/wordmark.js`: extrudes the wordmark SVG with Three.js and spins it around the vertical axis.
   It stops under `prefers-reduced-motion`; the material colour is the canvas's CSS `color`.
 

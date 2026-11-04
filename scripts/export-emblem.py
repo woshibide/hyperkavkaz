@@ -1,4 +1,4 @@
-"""Run with Blender: blender -b emblem.blend --python scripts/export-emblem.py -- reference.jpeg."""
+"""Run with Blender: blender -b emblem.blend --python scripts/export-emblem.py -- reference.jpeg september.png."""
 
 import sys
 import tempfile
@@ -45,7 +45,12 @@ def material(name, color, metalness, roughness, coat=0):
     return surface
 
 
-def image_node(surface, name, pixels, directory, color_space):
+def rgba(rgb):
+    return np.dstack((rgb, np.ones(rgb.shape[:2])))
+
+
+def save_image(name, pixels, directory, color_space):
+    pixels = rgba(pixels)
     height, width, _ = pixels.shape
     image = bpy.data.images.new(name, width, height, alpha=False)
     image.colorspace_settings.name = color_space
@@ -53,6 +58,11 @@ def image_node(surface, name, pixels, directory, color_space):
     image.filepath_raw = str(directory / f"{name}.png")
     image.file_format = "PNG"
     image.save()
+    return image
+
+
+def image_node(surface, name, pixels, directory, color_space):
+    image = save_image(name, pixels, directory, color_space)
     image.pack()
     texture = surface.node_tree.nodes.new("ShaderNodeTexImage")
     texture.image = image
@@ -60,7 +70,7 @@ def image_node(surface, name, pixels, directory, color_space):
 
 
 def leather_grain():
-    """Generate a seamless normal map from rounded, irregular leather pebbles."""
+    """Generate a seamless height field of rounded, irregular leather pebbles."""
     resolution, cells = 256, 13
     rng = np.random.default_rng(580)
     sites = rng.uniform(0.12, 0.88, (cells, cells, 2))
@@ -80,21 +90,29 @@ def leather_grain():
         nearest = np.minimum(nearest, distance)
 
     seam = np.sqrt(second) - np.sqrt(nearest)
-    height = 0.65 * (1 - np.exp(-8 * seam)) + 0.35 * np.exp(-5 * nearest)
+    return 0.65 * (1 - np.exp(-8 * seam)) + 0.35 * np.exp(-5 * nearest)
+
+
+def normal_map(height):
     dx = np.roll(height, 1, axis=1) - np.roll(height, -1, axis=1)
     dy = np.roll(height, 1, axis=0) - np.roll(height, -1, axis=0)
     normals = np.stack((1.8 * dx, 1.8 * dy, np.ones_like(dx)), axis=-1)
     normals /= np.linalg.norm(normals, axis=-1, keepdims=True)
-    return np.dstack((normals * 0.5 + 0.5, np.ones_like(dx)))
+    return normals * 0.5 + 0.5
 
 
-def engraving(reference):
-    """Project the upper-right motif from the reference, isolating its dark ink."""
+def read_image(reference):
     image = bpy.data.images.load(str(reference))
     width, height = image.size
     pixels = np.empty(width * height * 4, dtype=np.float32)
     image.pixels.foreach_get(pixels)
-    pixels = pixels.reshape((height, width, 4))
+    return pixels.reshape((height, width, 4))
+
+
+def engraving(reference):
+    """Project the upper-right motif from the reference, isolating its dark ink."""
+    pixels = read_image(reference)
+    height, width, _ = pixels.shape
     u, v = np.meshgrid(np.linspace(0, 1, 512), np.linspace(0, 1, 512))
     x, y = 232 + u * 112, 330 - v * 114
     sample = pixels[
@@ -106,7 +124,57 @@ def engraving(reference):
     inside = np.clip((y - (214 + 6 * u + 24 * u ** 2)) / 2, 0, 1)
     ink = np.clip((0.72 - sample) / 0.52, 0, 1) * inside
     grey = 0.84 - 0.79 * ink ** 1.35
-    return np.dstack((grey, grey, grey, np.ones_like(grey)))
+    return np.repeat(grey[:, :, None], 3, axis=2)
+
+
+def enamel_relief(reference):
+    """Recover the small-scale embossing from the red panel without its lighting gradient."""
+    pixels = read_image(reference)
+    opaque = pixels[:, :, 3] > 0.5
+    rows = np.flatnonzero(opaque.any(axis=1))
+    columns = np.flatnonzero(opaque.any(axis=0))
+    u, v = np.meshgrid(np.linspace(0, 1, 384), np.linspace(0, 1, 384))
+    x = columns[0] + (0.181 + u * 0.291) * (columns[-1] - columns[0])
+    y = rows[-1] - (0.322 + (1 - v) * 0.146) * (rows[-1] - rows[0])
+    red = pixels[np.rint(y).astype(int), np.rint(x).astype(int), 0]
+    log_red = np.log(np.maximum(red, 0.05))
+
+    # A band pass isolates the engraving from broad highlights and pixel noise.
+    freq_y, freq_x = (np.fft.fftfreq(size) for size in log_red.shape)
+    frequencies = freq_y[:, None] ** 2 + freq_x ** 2
+    band = np.exp(-2 * np.pi ** 2 * frequencies) - np.exp(-2 * (7 * np.pi) ** 2 * frequencies)
+    detail = np.fft.ifft2(np.fft.fft2(log_red) * band).real
+    edge = np.clip(np.minimum.reduce([u, 1 - u, v, 1 - v]) * 18, 0, 1)
+    height = 0.5 + np.clip(detail * 2.4, -0.42, 0.42) * edge
+
+    # Inset the embossed patch in the lower half, with a flat glaze above it.
+    relief = np.full_like(height, 0.5)
+    relief[16:248] = height[np.linspace(0, len(height) - 1, 232).astype(int)]
+    return relief
+
+
+def surface_maps(surface, name, albedo, orm, directory, settings, normals=None):
+    nodes = surface.node_tree.nodes
+    links = surface.node_tree.links
+    shader = nodes.get("Principled BSDF")
+    color = image_node(surface, f"{name}-albedo", albedo, directory, "sRGB")
+    packed = image_node(surface, f"{name}-orm", orm, directory, "Non-Color")
+    channels = nodes.new("ShaderNodeSeparateColor")
+    channels.mode = "RGB"
+    output = nodes.new("ShaderNodeGroup")
+    output.node_tree = settings
+    links.new(color.outputs["Color"], shader.inputs["Base Color"])
+    links.new(packed.outputs["Color"], channels.inputs["Color"])
+    links.new(channels.outputs["Red"], output.inputs["Occlusion"])
+    links.new(channels.outputs["Green"], shader.inputs["Roughness"])
+    links.new(channels.outputs["Blue"], shader.inputs["Metallic"])
+    if normals is not None:
+        texture = image_node(surface, f"{name}-normal", normals, directory, "Non-Color")
+        node = nodes.new("ShaderNodeNormalMap")
+        node.inputs["Strength"].default_value = 0.65
+        links.new(texture.outputs["Color"], node.inputs["Color"])
+        links.new(node.outputs["Normal"], shader.inputs["Normal"])
+
 
 
 def projected_uv(obj, repeats=None):
@@ -122,23 +190,33 @@ def projected_uv(obj, repeats=None):
     uv.uv.foreach_set("vector", coords[indices].astype(np.float32).ravel())
 
 
-def export(reference, output, directory):
+def export(reference, september, output, directory):
+    output.parent.mkdir(parents=True, exist_ok=True)
     surfaces = {
         "leather": material("Black pebbled leather", "181719", 0, 0.54, 0.15),
         "rim": material("Outer chrome edge", "b1b6c1", 0.95, 0.22),
-        "chrome": material("Polished chrome", "c6c9ce", 0.96, 0.21),
+        "chrome": material("Polished chrome", "aeb1b8", 0.99, 0.17),
         "red": material("Crimson enamel", "b0061e", 0.28, 0.25, 0.4),
-        "silver": material("Silver enamel", "d5d5d8", 0.26, 0.27, 0.35),
-        "engraving": material("Engraved silver enamel", "d5d5d8", 0.22, 0.33, 0.22),
+        "silver": material("Silver enamel", "e4e4e7", 0.58, 0.24, 0.42),
+        "engraving": material("Engraved silver enamel", "e0e0e4", 0.34, 0.29, 0.30),
         "stripes": material("Blackened metal", "202026", 0.54, 0.28),
         "red-relief": material("Polished red relief", "d51b2b", 0.47, 0.23, 0.35),
     }
-    leather = surfaces["leather"]
-    grain = image_node(leather, "leather-grain", leather_grain(), directory, "Non-Color")
-    bump = leather.node_tree.nodes.new("ShaderNodeNormalMap")
-    bump.inputs["Strength"].default_value = 0.54
-    leather.node_tree.links.new(grain.outputs["Color"], bump.inputs["Color"])
-    leather.node_tree.links.new(bump.outputs["Normal"], leather.node_tree.nodes.get("Principled BSDF").inputs["Normal"])
+    settings = bpy.data.node_groups.new("glTF Material Output", "ShaderNodeTree")
+    settings.interface.new_socket("Occlusion", in_out="INPUT", socket_type="NodeSocketFloat")
+
+    grain = leather_grain()
+    leather_color = (0.78 + 0.28 * grain)[:, :, None] * np.array([0.070, 0.067, 0.074])
+    leather_orm = np.dstack((0.80 + 0.20 * grain, 0.62 - 0.17 * grain, np.zeros_like(grain)))
+    surface_maps(surfaces["leather"], "leather", leather_color, leather_orm, directory, settings, normal_map(grain))
+
+    relief = enamel_relief(september)
+    red_color = (0.95 + 0.10 * relief)[:, :, None] * np.array([0.73, 0.023, 0.075])
+    red_orm = np.dstack((0.92 + 0.08 * relief, 0.33 - 0.12 * relief, np.full_like(relief, 0.34)))
+    surface_maps(surfaces["red"], "enamel", red_color, red_orm, directory, settings)
+    surfaces["red"]["enamelRelief"] = True
+    bump = np.repeat(relief[:, :, None], 3, axis=2)
+    save_image("emblem-enamel-bump", bump, output.parent, "Non-Color")
 
     engraved = surfaces["engraving"]
     ink = image_node(engraved, "engraved-ornament", engraving(reference), directory, "sRGB")
@@ -158,8 +236,8 @@ def export(reference, output, directory):
         for uv in list(obj.data.uv_layers):
             obj.data.uv_layers.remove(uv)
         if surface == "leather":
-            projected_uv(obj, repeats=(8, 10))
-        if surface == "engraving":
+            projected_uv(obj, repeats=(6, 8))
+        if surface in ("red", "engraving"):
             projected_uv(obj)
 
         if panel:
@@ -172,7 +250,6 @@ def export(reference, output, directory):
             modifier.use_collapse_triangulate = True
         obj.select_set(True)
 
-    output.parent.mkdir(parents=True, exist_ok=True)
     bpy.ops.export_scene.gltf(
         filepath=str(output), use_selection=True, export_apply=True,
         export_extras=True, export_animations=False,
@@ -180,7 +257,7 @@ def export(reference, output, directory):
 
 
 if __name__ == "__main__":
-    reference = Path(sys.argv[sys.argv.index("--") + 1]).resolve()
+    reference, september = map(lambda value: Path(value).resolve(), sys.argv[sys.argv.index("--") + 1:])
     output = Path(__file__).resolve().parents[1] / "assets/models/emblem.glb"
     with tempfile.TemporaryDirectory() as temp:
-        export(reference, output, Path(temp))
+        export(reference, september, output, Path(temp))
