@@ -14,10 +14,8 @@ Pages are designed one at a time and approved by the user before the next one st
 
 Decided so far:
 
-- Fonts: Adobe Fonts kit `mrh7ota` (linked in `site/snippets/layout.php`), families `sloop-script-one`, `sloop-script-two`, `sloop-script-three`, `sloop-script-pro`, each in 400 and 700.
-  Use them through the `--font-sloop-*` custom properties in `main.css`.
-  Kit settings (families, weights, `font-display`) are managed at https://fonts.adobe.com/my_fonts#web_projects-section.
-  The scripts are for display only (the wordmark, section headings like the footer's "Newsletter"); running text and UI use the system sans, `--font-text`.
+- Fonts: self-hosted Pinyon Script for display text through `--font-display` in `main.css`.
+  Running text and UI use the system sans, `--font-text`.
 - Composition: centred. The wordmark, navigation and every footer row sit on the vertical axis of the page.
 - Colours: the `--color-*` custom properties in `main.css` (snow paper, night ink, pomegranate accent for the current page and errors).
 - Header: the wordmark SVG, inlined, then the main navigation in one row (no menu button, also on phones).

@@ -1,17 +1,15 @@
 /* Base reset, design tokens, and the shared page frame (header and footer). */
 
-/*
- * Fonts come from the Adobe Fonts kit linked in site/snippets/layout.php.
- * Each family has regular (400) and bold (700), no italics.
- * Browsers only download the faces a page actually uses.
- */
-:root {
-  --font-sloop-one: "sloop-script-one", sans-serif;
-  --font-sloop-two: "sloop-script-two", sans-serif;
-  --font-sloop-three: "sloop-script-three", sans-serif;
-  --font-sloop-pro: "sloop-script-pro", sans-serif;
+@font-face {
+  font-family: "Pinyon Script";
+  src: url("../fonts/PinyonScript-Regular.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
 
-  /* The scripts are for display only; running text and UI use the system sans. */
+:root {
+  --font-display: "Pinyon Script", "Snell Roundhand", cursive;
   --font-text: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   /* Colour: snow paper, night ink, pomegranate for the current page and errors. */
@@ -175,7 +173,7 @@ textarea {
 .page-title {
   width: 100%;
   margin: 0;
-  font-family: var(--font-sloop-one);
+  font-family: var(--font-display);
   font-size: min(25vw, 12rem);
   font-weight: 400;
   line-height: 1.2;
@@ -271,7 +269,7 @@ a.tag:hover {
 
 .section-title,
 .newsletter h2 {
-  font-family: var(--font-sloop-one);
+  font-family: var(--font-display);
   font-size: 3rem;
   font-weight: 400;
   line-height: 1.25;
@@ -589,7 +587,7 @@ a.tag:hover {
 .artist-group-letter {
   margin: 0;
   color: var(--color-ink-soft);
-  font-family: var(--font-sloop-one);
+  font-family: var(--font-display);
   font-size: 4rem;
   font-weight: 400;
   line-height: 1.25;
@@ -1292,7 +1290,7 @@ a.tag:hover {
   border: 1px solid var(--color-line);
   border-radius: var(--radius-box);
   background: var(--color-field);
-  font-family: var(--font-sloop-one);
+  font-family: var(--font-display);
   font-size: 2.25rem;
   line-height: 1.2;
   text-decoration: none;
@@ -1358,6 +1356,18 @@ main:has(> .wordmark) {
   height: 100%;
 }
 
+.emblem-loading {
+  position: absolute;
+  display: none;
+  margin: 0;
+  font: 400 1.625rem/1.2 var(--font-display);
+}
+
+.emblem.is-loading .emblem-loading {
+  display: block;
+}
+
+.emblem.is-loading .emblem-poster,
 .emblem.is-rendered .emblem-poster {
   opacity: 0;
 }
@@ -1523,7 +1533,7 @@ main:has(> .wordmark) {
 
 .legal-mark {
   color: var(--color-ink);
-  font-family: var(--font-sloop-one);
+  font-family: var(--font-display);
   font-size: 1.5rem;
   line-height: 1;
 }

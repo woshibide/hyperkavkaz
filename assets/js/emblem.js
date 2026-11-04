@@ -127,6 +127,4 @@ async function showEmblem() {
   }
 }
 
-showEmblem().catch(() => {
-  // The reference image is already visible if the model or WebGL is unavailable.
-});
+await showEmblem();
