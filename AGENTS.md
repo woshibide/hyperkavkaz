@@ -61,7 +61,7 @@ That is acceptable locally only; on Apache, `.htaccess` blocks those paths.
 
 | URL | Template | Blueprint | Notes |
 | --- | --- | --- | --- |
-| `/` | `home` | `home` | Home. Only the rotating 3D wordmark, on a full-viewport canvas; the footer starts below the fold. No editable fields. |
+| `/` | `home` | `home` | Home. Three.js shield emblem with a reference image fallback. No editable fields. |
 | `/artists` | `artists` | `artists` | Listed artists, sorted by title. |
 | `/artists/{slug}` | `artist` | `artist` | Based in, portrait (cover), biography, links. Discography comes from shop products that name the artist. |
 | `/shop` | `shop` | `shop` | Listed products, in Panel order. |
@@ -100,14 +100,16 @@ Main navigation is the listed top-level pages, in folder order: Artists, Shop, B
 - `assets/js/main.js`: loaded on every page; imports `page-title.js`.
 - `assets/js/page-title.js`: fits each `.page-title` to its column by the ink of the glyphs (measured on a canvas, because script swashes overflow the text box), capped at half the viewport height, refitted on resize.
   Without JavaScript the CSS fallback size applies.
-- `assets/js/wordmark.js`: extrudes that SVG with Three.js and spins it around the vertical axis.
+- `assets/js/emblem.js`: loads the home shield with named panel hit targets and honours reduced motion.
+  Rebuild the model from the supplied Blender and JPEG sources with `scripts/export-emblem.py`.
+- `assets/js/wordmark.js`: extrudes the wordmark SVG with Three.js and spins it around the vertical axis.
   It stops under `prefers-reduced-motion`; the material colour is the canvas's CSS `color`.
 
 ## Three.js
 
-Vendored, no npm or build step: `assets/js/vendor/three/` holds `three.module.js`, `three.core.js`, `addons/loaders/SVGLoader.js` and `LICENSE` from the `three` npm package, version 0.186.1.
+Vendored, no npm or build step: `assets/js/vendor/three/` holds `three.module.js`, `three.core.js`, SVGLoader, GLTFLoader and its utilities, and `LICENSE` from the `three` npm package, version 0.186.1.
 The import map in `site/snippets/layout.php` maps `three` and `three/addons/` to that folder; it must stay before the first module script.
-To update, run `npm pack three@<version>` in a temporary folder and copy the same four files over (`addons/` comes from `examples/jsm/`).
+To update, run `npm pack three@<version>` in a temporary folder and copy the same files over (`addons/` comes from `examples/jsm/`).
 Add any further addon at the same path it has under `examples/jsm/`.
 
 ## Conventions

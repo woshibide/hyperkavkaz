@@ -22,7 +22,7 @@ ORIGIN = f"https://{HOST}"
 ASSET_ROOTS = ("assets/", "media/pages/", "media/site/")
 ASSET_TYPES = {
     ".css", ".js", ".svg", ".png", ".jpg", ".jpeg", ".webp", ".avif", ".gif",
-    ".ico", ".pdf", ".zip", ".woff", ".woff2", ".mp3", ".mp4", ".webm",
+    ".ico", ".pdf", ".zip", ".woff", ".woff2", ".mp3", ".mp4", ".webm", ".glb",
 }
 MODULE_IMPORT = re.compile(
     r"""^\s*(?:import\s+(?:[^;'"]*?\s+from\s+)?|export\s+[^;'"]*?\s+from\s+)['"]([^'"]+)['"]""",
@@ -127,10 +127,12 @@ def export(port, output, page_ids):
         suffix = PurePosixPath(path).suffix.lower()
         if not path.startswith(ASSET_ROOTS) or suffix not in ASSET_TYPES:
             raise ValueError(f"Forbidden preview asset: {path}")
-        if path.startswith("assets/"):
-            source = ROOT / path
-            if not source.resolve().is_relative_to(ROOT / "assets"):
-                raise ValueError(f"Asset outside project assets: {path}")
+        source = ROOT / path
+        public_root = ROOT / PurePosixPath(path).parts[0]
+        if not source.resolve().is_relative_to(public_root):
+            raise ValueError(f"Asset outside {public_root.name}: {path}")
+        # Kirby only serves a thumbnail through its router while a generation job exists.
+        if path.startswith("assets/") or source.is_file():
             body = source.read_bytes()
         else:
             body = fetch(port, path)

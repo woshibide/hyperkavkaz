@@ -1,4 +1,4 @@
 title: Home
 
-# The home page shows only the rotating 3D wordmark (site/templates/home.php).
+# The home page shows only the 3D emblem (site/templates/home.php).
 fields: {}
